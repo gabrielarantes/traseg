@@ -1,20 +1,23 @@
 import {call, put} from 'redux-saga/effects';
 
-const url = `https://my.api.mockaroo.com/epilist?key=52d6c330`;
+import api from '../../../config/config'
 
-import * as appAction from '../../actions/appActions';
+const url = `epilist?key=52d6c330`; 
+
+import * as equipamentsAction from '../../actions/equipamentsActions';
 
 export function* getEquipaments() {
+
   try {
     const response = yield call(api.get, url);
 
     let {success} = response.data;
     if (success) {
-      yield put(appAction.AppTokenSuccess(response.data));
+      yield put(equipamentsAction.EquipamentsSuccess(response.data));
     } else {
-      yield put(appAction.AppTokenFailed(response.data));
+      yield put(equipamentsAction.EquipamentsFailed(response.data));
     }
   } catch (error) {
-    yield put(appAction.AppTokenFailed(error));
+    yield put(equipamentsAction.EquipamentsFailed(error));
   }
 }

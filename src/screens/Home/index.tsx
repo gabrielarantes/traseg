@@ -7,20 +7,20 @@ import Header from '../../atomic/atoms/Header';
 import Loading from '../../atomic/atoms/Loading';
 import colors from '../../atomic/constants/colors';
 import {connect} from 'react-redux';
-import * as appAction from '../../redux/actions/appActions';
-import * as equipamentsAction from '../../redux/actions/equipamentsAction';
+
+import * as equipamentsAction from '../../redux/actions/equipamentsActions';
 
 import {isEmpty} from 'lodash';
 
 import moment from 'moment';
 
-import CardMovie from '../../atomic/molecules/CardMovie';
-import Pagination from '../../atomic/molecules/Pagination';
+import CardEquipaments from '../../atomic/molecules/CardEquipaments';
 
 function Home({
   navigation,
-  _getItems,
+  _getEquipaments,
   darkMode,
+  dataEquipaments
 }) {
 
   //handling with back press
@@ -45,30 +45,19 @@ function Home({
 
   //getting the list
   useEffect(() => {
-    _getItems()
+    _getEquipaments()
   }, []);
 
   //render item
   const renderItem = ({item}) => {
     const {
-      title,
-      poster_path,
-      backdrop_path,
-      id,
-      release_date,
-      vote_average,
-      vote_count,
+      name
     } = item;
 
     return (
-      <CardMovie
+      <CardEquipaments
         navigation={navigation}
-        title={title}
-        image={poster_path}
-        id={id}
-        date={release_date}
-        vote_average={vote_average}
-        vote_count={vote_count}
+        title={name}
       />
     );
   };
@@ -77,43 +66,37 @@ function Home({
     <>
       <Header backButton={false} title="CHECKLIST" navigation={navigation} />
       <BoxSafe>
-        {/* <Box pr={8} pl={8} pt={8} bg={darkMode ? '' : colors.white}>
-          {dataMovies.isLoading ? (
+  
+        <Box pr={8} pl={8} pt={8} bg={darkMode ? '' : colors.white}>
+          {dataEquipaments.isLoading ? (
             <Loading name={'spinner'} size={30} color={colors.gold}></Loading>
           ) : (
             <>
+              
               <FlatList
-                data={dataMovies.data.results}
-                keyExtractor={(item) => item.id.toString()}
+                data={dataEquipaments.data}
+                keyExtractor={(item) => item.name}
                 renderItem={renderItem}
-                onEndReached={() => onEndFlatList()}
+                //onEndReached={() => onEndFlatList()}
                 onEndReachedThreshold={0.01}
-                numColumns={2}
               />
             </>
           )}
-        </Box> */}
+        </Box>
       </BoxSafe>
     </>
   );
 }
 
 const mapStateToProps = (state) => ({
-  dataToken: state.appReducer,
-  dataMovies: state.moviesReducer,
+  dataEquipaments: state.equipamentsReducer,
   darkMode: state.appReducer.darkMode,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    _getItems: () => {
-
-    },
-    _getToken: () => {
-      dispatch(appAction.AppTokenRequest());
-    },
-    _getMovies: (data) => {
-      dispatch(moviesAction.MoviesRequest(data));
+    _getEquipaments: () => {
+      dispatch(equipamentsAction.EquipamentsRequest());
     },
   };
 };
