@@ -28,7 +28,7 @@ const Button = ({
     <ContainerButton
       testID="button-component"
       onPress={disable ? null : onPress}
-      bgColor={disable ? colors.gray : bgColor}
+      bgColor={disable ? colors.lightGray : bgColor}
       width={width}
       height={height}
       borderColor={!borderColor ? 'transparent' : borderColor}

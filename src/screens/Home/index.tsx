@@ -41,15 +41,15 @@ function Home({navigation, _getEquipaments, darkMode, dataEquipaments}) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    console.log(items);
+    console.log(items.length);
   }, [items]);
 
   const manageItems = (item, value) => {
     let arr = items;
 
     if (value) {
-      arr.push(item);
-      setItems(arr);
+      let newData = [...arr, item]
+      setItems(newData);
     } else {
       let filtered = filter(arr, function (n) {
         return n !== item;
@@ -67,9 +67,15 @@ function Home({navigation, _getEquipaments, darkMode, dataEquipaments}) {
         navigation={navigation}
         object={item}
         manageItems={manageItems}
+        darkMode={darkMode}
       />
     );
   };
+
+  //checking the list
+  const check = () => {
+    Alert.alert('Congratulations','Everything is alright\nYou can start your job');
+  }
 
   return (
     <>
@@ -77,7 +83,7 @@ function Home({navigation, _getEquipaments, darkMode, dataEquipaments}) {
       <BoxSafe bg={darkMode ? '' : colors.white}>
         <Box pr={8} pl={8} pt={8} bg={'transparent'}>
           {dataEquipaments.isLoading ? (
-            <Loading name={'spinner'} size={30} color={colors.gold}></Loading>
+            <Loading name={'spinner'} size={30} color={colors.darkGreen}></Loading>
           ) : (
             <>
               <FlatList
@@ -91,11 +97,13 @@ function Home({navigation, _getEquipaments, darkMode, dataEquipaments}) {
         </Box>
         <Box pr={8} pl={8} pt={8} flex={0.1} bg={'transparent'}>
           <Button
-            bgColor={colors.darkGreen}
+            bgColor={ darkMode ? colors.gold : colors.darkGreen }
             name="Check"
             fontSize={18}
             textColor={colors.white}
             radius={6}
+            onPress={check}
+            disable={items.length === 5 ? false : true}
           />
         </Box>
       </BoxSafe>
