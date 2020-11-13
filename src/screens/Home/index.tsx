@@ -1,28 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {BackHandler, Text, FlatList, Alert} from 'react-native';
+import {BackHandler, FlatList, Alert} from 'react-native';
 
 import {BoxSafe, Box} from '../../atomic/atoms/Spaces';
 
 import Header from '../../atomic/atoms/Header';
 import Loading from '../../atomic/atoms/Loading';
+import Button from '../../atomic/atoms/Button';
 import colors from '../../atomic/constants/colors';
 import {connect} from 'react-redux';
 
 import * as equipamentsAction from '../../redux/actions/equipamentsActions';
 
-import {isEmpty} from 'lodash';
-
-import moment from 'moment';
+import {filter} from 'lodash';
 
 import CardEquipaments from '../../atomic/molecules/CardEquipaments';
 
-function Home({
-  navigation,
-  _getEquipaments,
-  darkMode,
-  dataEquipaments
-}) {
-
+function Home({navigation, _getEquipaments, darkMode, dataEquipaments}) {
   //handling with back press
   const backAction = () => {
     Alert.alert('Ops!', 'Are you sure you want to quit?', [
@@ -37,27 +30,43 @@ function Home({
   };
 
   useEffect(() => {
+    _getEquipaments();
+
     BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', backAction);
   }, []);
 
-  //getting the list
+  const [items, setItems] = useState([]);
+
   useEffect(() => {
-    _getEquipaments()
-  }, []);
+    console.log(items);
+  }, [items]);
+
+  const manageItems = (item, value) => {
+    let arr = items;
+
+    if (value) {
+      arr.push(item);
+      setItems(arr);
+    } else {
+      let filtered = filter(arr, function (n) {
+        return n !== item;
+      });
+      setItems(filtered);
+    }
+  };
 
   //render item
   const renderItem = ({item}) => {
-    const {
-      name
-    } = item;
+    const {name} = item;
 
     return (
       <CardEquipaments
         navigation={navigation}
-        title={name}
+        object={item}
+        manageItems={manageItems}
       />
     );
   };
@@ -65,23 +74,29 @@ function Home({
   return (
     <>
       <Header backButton={false} title="CHECKLIST" navigation={navigation} />
-      <BoxSafe>
-  
-        <Box pr={8} pl={8} pt={8} bg={darkMode ? '' : colors.white}>
+      <BoxSafe bg={darkMode ? '' : colors.white}>
+        <Box pr={8} pl={8} pt={8} bg={'transparent'}>
           {dataEquipaments.isLoading ? (
             <Loading name={'spinner'} size={30} color={colors.gold}></Loading>
           ) : (
             <>
-              
               <FlatList
                 data={dataEquipaments.data}
                 keyExtractor={(item) => item.name}
                 renderItem={renderItem}
-                //onEndReached={() => onEndFlatList()}
                 onEndReachedThreshold={0.01}
               />
             </>
           )}
+        </Box>
+        <Box pr={8} pl={8} pt={8} flex={0.1} bg={'transparent'}>
+          <Button
+            bgColor={colors.darkGreen}
+            name="Check"
+            fontSize={18}
+            textColor={colors.white}
+            radius={6}
+          />
         </Box>
       </BoxSafe>
     </>

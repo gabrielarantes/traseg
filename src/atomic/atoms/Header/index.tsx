@@ -52,14 +52,14 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
             <Icons
               name="chevron-left"
               size={18}
-              color={darkMode ? colors.gold : colors.carmen}
+              color={darkMode ? colors.gold : colors.darkGreen}
             />
           </BackButton>
         )}
 
         <TextRegular
           align={'center'}
-          color={darkMode ? colors.gold : colors.carmen}>
+          color={darkMode ? colors.gold : colors.darkGreen}>
           {title}
         </TextRegular>
 
@@ -74,12 +74,12 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
             style={{marginTop: 5, marginRight: 7}}
             name="sun-o"
             size={20}
-            color={darkMode ? colors.gold : colors.carmen}
+            color={darkMode ? colors.gold : colors.darkGreen}
           />
           <Switch
             trackColor={{false: colors.gray, true: colors.gray}}
             thumbColor={darkMode ? colors.gold : colors.white}
-            ios_backgroundColor={colors.gray}
+            ios_backgroundColor={colors.darkGreen}
             onValueChange={toggleSwitch}
             value={darkMode}
           />
@@ -87,7 +87,7 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
             style={{marginTop: 5, marginLeft: 7}}
             name="moon-o"
             size={20}
-            color={darkMode ? colors.gold : colors.carmen}
+            color={darkMode ? colors.gold : colors.darkGreen}
           />
         </View>
       </View>
