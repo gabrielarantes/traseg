@@ -19,16 +19,4 @@ function Routes() {
   );
 }
 
-// const MainStack = createStackNavigator(
-//   {
-//     Splash,
-//     Home,
-//   },
-//   {
-//     headerMode: 'none',
-//   },
-// );
-
-//const Routes = createAppContainer(createSwitchNavigator({MainStack}));
-
 export default Routes;
